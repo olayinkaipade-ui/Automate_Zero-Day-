@@ -1,0 +1,26 @@
+name: Daily Threat Intelligence Feed
+
+on:
+  schedule:
+    # This is "Cron" syntax. '0 13 * * *' runs at 1:00 PM UTC.
+    # To run at 8:00 AM EST (UTC-5), use: 0 13 * * *
+    - cron: '0 13 * * *' 
+  workflow_dispatch: # This adds a button to run it manually for testing!
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Threat Scraper
+        run: python threat_feeder.py
